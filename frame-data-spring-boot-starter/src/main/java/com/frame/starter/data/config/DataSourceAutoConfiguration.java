@@ -1,4 +1,4 @@
-package com.frame.starter.data.shardingDatasource;
+package com.frame.starter.data.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.baomidou.mybatisplus.annotation.DbType;
@@ -10,6 +10,8 @@ import com.baomidou.mybatisplus.extension.plugins.OptimisticLockerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.PerformanceInterceptor;
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
+import com.frame.starter.data.properties.MybatisPlusConfig;
+import com.frame.starter.data.properties.ShardingMasterSlaveConfig;
 import com.google.common.collect.Maps;
 import io.shardingjdbc.core.api.MasterSlaveDataSourceFactory;
 import lombok.extern.slf4j.Slf4j;
@@ -27,13 +29,13 @@ import java.sql.SQLException;
 import java.util.Map;
 
 /**
+ * Created by derrick on 2018/12/29.
  */
 @Slf4j
 @Configuration
 @EnableConfigurationProperties({ShardingMasterSlaveConfig.class,MybatisPlusConfig.class})
 @ConditionalOnProperty({"sharding.jdbc.data-sources.ds_master.url", "sharding.jdbc.master-slave-rule.master-data-source-name"})
-public class ShardingDataSourceConfig {
-
+public class DataSourceAutoConfiguration {
     @Autowired(required = false)
     private ShardingMasterSlaveConfig shardingMasterSlaveConfig;
     @Autowired(required = false)
@@ -51,10 +53,10 @@ public class ShardingDataSourceConfig {
     }
 
     private void configDataSource(DruidDataSource druidDataSource) {
-        druidDataSource.setMaxActive(20);
-        druidDataSource.setInitialSize(1);
-        druidDataSource.setMaxWait(60000);
-        druidDataSource.setMinIdle(1);
+        druidDataSource.setMaxActive(druidDataSource.getMaxActive());
+        druidDataSource.setInitialSize(druidDataSource.getInitialSize());
+        druidDataSource.setMaxWait(druidDataSource.getMaxWait());
+        druidDataSource.setMinIdle(druidDataSource.getMinIdle());
         druidDataSource.setTimeBetweenEvictionRunsMillis(60000);
         druidDataSource.setMinEvictableIdleTimeMillis(300000);
         druidDataSource.setValidationQuery("select 'x'");
@@ -130,5 +132,4 @@ public class ShardingDataSourceConfig {
     public OptimisticLockerInterceptor optimisticLockerInterceptor() {
         return new OptimisticLockerInterceptor();
     }
-
 }

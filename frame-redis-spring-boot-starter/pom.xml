@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.frame.starter</groupId>
 	<artifactId>frame-redis-spring-boot-starter</artifactId>
-	<version>1.0.0</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<name>frame-redis-spring-boot-starter</name>
 	<description>Demo project for Spring Boot</description>
 

@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.frame.starter</groupId>
 	<artifactId>frame-rabbitmq-spring-boot-starter</artifactId>
-	<version>1.0.0</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<name>frame-rabbitmq-spring-boot-starter</name>
 	<description>Demo project for Spring Boot</description>
 
@@ -32,9 +32,9 @@
 			<artifactId>spring-cloud-stream</artifactId>
 		</dependency>
 		<!--rabbitMq  集成方式修改成spring cloud stream，此暂时不用++++++-->
-		<dependency>
+		<!--<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-amqp</artifactId>
-		</dependency>
+		</dependency>-->
 	</dependencies>
 </project>

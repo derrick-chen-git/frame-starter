@@ -16,8 +16,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cache.annotation.CachingConfigurerSupport;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -30,19 +28,15 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Created by lemonade on 2018/12/27.
+ * Created by derrick on 2018/12/27.
  */
 @Configuration
 @EnableConfigurationProperties(RedisProperties.class)
-public class RedissonAutoConfiguration {
+@AutoConfigureAfter(RedisAutoConfiguration.class)
+public class RedissonAutoConfiguration{
     @Autowired
     RedisProperties redisProperties;
 
-
-    @Configuration
-    @EnableCaching
-    @AutoConfigureAfter(RedisAutoConfiguration.class)
-    public class RedisAutoConfig extends CachingConfigurerSupport {
         /**
          * RedisTemplate配置
          */
@@ -63,7 +57,7 @@ public class RedissonAutoConfiguration {
         public RedisUtils redisUtils(RedisTemplate redisTemplate){
             return new RedisUtils(redisTemplate);
         }
-    }
+
 
     @Configuration
     @ConditionalOnClass({Redisson.class})

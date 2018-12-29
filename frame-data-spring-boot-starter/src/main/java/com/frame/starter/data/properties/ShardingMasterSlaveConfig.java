@@ -1,4 +1,4 @@
-package com.frame.starter.data.shardingDatasource;
+package com.frame.starter.data.properties;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import io.shardingjdbc.core.api.config.MasterSlaveRuleConfiguration;
