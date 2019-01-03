@@ -22,6 +22,7 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +34,7 @@ import java.util.List;
 @Configuration
 @EnableConfigurationProperties(RedisProperties.class)
 @AutoConfigureAfter(RedisAutoConfiguration.class)
+@EnableRedisHttpSession
 public class RedissonAutoConfiguration{
     @Autowired
     RedisProperties redisProperties;
