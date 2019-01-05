@@ -11,6 +11,7 @@
         <module>frame-rabbitmq-spring-boot-starter</module>
         <module>frame-redis-spring-boot-starter</module>
         <module>frame-data-spring-boot-starter</module>
+        <module>frame-xxl-job-spring-boot-starter</module>
     </modules>
 
 </project>
