@@ -19,7 +19,7 @@
 	</properties>
 
 	<dependencies>
-		<dependency>
+		<!--<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-stream-rabbit</artifactId>
 		</dependency>
@@ -30,11 +30,21 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-stream</artifactId>
-		</dependency>
-		<!--rabbitMq  集成方式修改成spring cloud stream，此暂时不用++++++-->
+		</dependency>-->
 		<!--<dependency>
+			<groupId>com.frame.starter</groupId>
+			<artifactId>frame-redis-spring-boot-starter</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>-->
+		<!--rabbitMq  集成方式修改成spring cloud stream，此暂时不用++++++-->
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-amqp</artifactId>
-		</dependency>-->
+		</dependency>
+		<dependency>
+			<groupId>com.frame.starter</groupId>
+			<artifactId>frame-redis-spring-boot-starter</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 </project>

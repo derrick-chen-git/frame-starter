@@ -182,4 +182,14 @@ public class RedisUtils {
         ZSetOperations<String, Object> zset = redisTemplate.opsForZSet();
         return zset.rangeByScore(key, scoure, scoure1);
     }
+
+    /**
+     * h计数
+     */
+    public long hmIncrement(String key, Object hashKey, long value){
+        return redisTemplate.opsForHash().increment(key,hashKey,value);
+    }
+    public long hmDelete(String key, Object hashKey){
+        return redisTemplate.opsForHash().delete(key,hashKey);
+    }
 }
