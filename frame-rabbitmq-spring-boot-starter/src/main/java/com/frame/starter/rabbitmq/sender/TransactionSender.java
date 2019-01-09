@@ -42,19 +42,10 @@ public class TransactionSender {
 		logger.info("==> custom mq annotation,rd"+ rd);
     	String exchange = rd.exchange();
     	String bindingKey = rd.bindingKey();
-    	//String dbCoordinator = rd.dbCoordinator();
     	String bizName = rd.bizName() + MQConstants.DB_SPLIT + getCurrentDateTime();
-    	//DBCoordinator coordinator = null;
 
-    	/*try{
-    		coordinator = (DBCoordinator) applicationContext.getBean(dbCoordinator);
-		}catch (Exception ex){
-			logger.error("无消息存储类，事务执行终止");
-			return;
-    	}*/
-
-		/**发送前暂存消息*/
-		coordinator.setMsgPrepare(bizName);
+		/**发送前暂存消息*//*
+		coordinator.setMsgPrepare(bizName);*/
 
 		Object returnObj = null;
     	/** 执行业务函数 */

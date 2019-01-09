@@ -45,11 +45,21 @@ public class RabbitMqSender {
      */
     public void sendTransMessage(String exchangeName,String routingKey,Object msg,boolean isPersistent){
         String msgId  = UUID.randomUUID().toString();
-        /**发送前暂存消息*/
-        coordinator.setMsgPrepare(msgId);
+     /*   *//**发送前暂存消息*//*
+        coordinator.setMsgPrepare(msgId);*/
         RabbitMetaMessage rabbitMetaMessage = this.getRabbitMetaMessage(exchangeName, routingKey, msg, isPersistent, msgId);
         /** 将消息设置为ready状态*/
         coordinator.setMsgReady(msgId, rabbitMetaMessage);
+        try {
+            baseSender.send(rabbitMetaMessage);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+    /**
+     * 发送消息
+     */
+    public void sendTransMessage(RabbitMetaMessage rabbitMetaMessage){
         try {
             baseSender.send(rabbitMetaMessage);
         } catch (JsonProcessingException e) {

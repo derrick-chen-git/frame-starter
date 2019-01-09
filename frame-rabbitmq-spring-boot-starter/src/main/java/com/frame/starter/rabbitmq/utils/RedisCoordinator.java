@@ -34,7 +34,7 @@ public class RedisCoordinator implements Coordinator {
         String message = JSON.toJSONString(rabbitMetaMessage);
         log.info("==>  RedisCoordinator setMsgReady msgId:{},message:{}",msgId,message);
         redisTemplate.opsForHash().put(MQConstants.MQ_MSG_READY, msgId, message);
-        redisTemplate.opsForSet().remove(MQConstants.MQ_MSG_PREPARE,msgId);
+        //redisTemplate.opsForSet().remove(MQConstants.MQ_MSG_PREPARE,msgId);
     }
     @Override
     public boolean hasReadyMsg(String msgId) {
@@ -86,8 +86,6 @@ public class RedisCoordinator implements Coordinator {
                 messageIds.add(message.getMessageId());
             }
         }
-        /**在redis中删除已超时的消息*/
-        hashOperations.delete(MQConstants.MQ_MSG_READY, messageIds);
         return messageAlert;
     }
 

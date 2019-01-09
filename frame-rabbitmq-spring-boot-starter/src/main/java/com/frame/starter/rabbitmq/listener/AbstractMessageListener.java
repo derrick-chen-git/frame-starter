@@ -23,13 +23,16 @@ public abstract class AbstractMessageListener implements ChannelAwareMessageList
     @Autowired
     private RedisUtils redisUtils;
 
-
+    /**
+     * 最大失败重新消费次数
+     */
+    private Integer maxConsumerCount = 3;
     /**
      * 接收消息，子类必须实现该方法
      *
      * @param message          消息对象
      */
-    public abstract void receiveMessage(Message message);
+    public abstract void receiveMessage(Message message) throws Exception;
 
     @Override
     public void onMessage(Message message, Channel channel) throws Exception {
@@ -48,18 +51,19 @@ public abstract class AbstractMessageListener implements ChannelAwareMessageList
                     messageProperties.getMessageId());
         } catch (Exception e) {
             logger.error("RabbitMQ 消息消费失败，" + e.getMessage(), e);
-            if (consumerCount >= MQConstants.MAX_CONSUMER_COUNT) {
+            if (consumerCount >= maxConsumerCount) {
                 // 入死信队列
                 logger.info("RabbitMQ 消息消费失败已达上限次数，入死信队列");
                 channel.basicReject(deliveryTag, false);
             } else {
-                //重回到队列，重新消费, 按照2的指数级递增
+               //重回到队列，重新消费, 按照2的指数级递增
                 Thread.sleep((long) (Math.pow(MQConstants.BASE_NUM, consumerCount)*1000));
-                redisUtils.hmIncrement(MQConstants.MQ_CONSUMER_RETRY_COUNT_KEY,
-                        messageProperties.getMessageId(), 1);
                 channel.basicNack(deliveryTag, false, true);
             }
         }
     }
 
+    public void setMaxConsumerCount(Integer maxConsumerCount) {
+        this.maxConsumerCount = maxConsumerCount;
+    }
 }

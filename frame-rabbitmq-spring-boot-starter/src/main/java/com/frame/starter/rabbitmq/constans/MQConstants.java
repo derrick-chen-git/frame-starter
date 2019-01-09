@@ -26,8 +26,6 @@ public class MQConstants {
     /**处于prepare状态消息*/
     public static final Object MQ_MSG_PREPARE = "mq.msg.prepare";
 
-
-    public static final String MQ_PRODUCER_RETRY_KEY = "mq.producer.retry.key";
     public static final String MQ_CONSUMER_RETRY_COUNT_KEY = "mq.consumer.retry.count.key";
     /**发送端重试乘数(ms)*/
     public static final int MUTIPLIER_TIME = 500;
