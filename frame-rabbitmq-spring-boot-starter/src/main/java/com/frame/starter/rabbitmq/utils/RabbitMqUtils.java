@@ -8,6 +8,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by lemonade on 2018/6/20.
@@ -34,9 +39,19 @@ public class RabbitMqUtils {
 
                     for (MyQueue queue : queueProperties.getQueues()) {*/
                         log.info("===>  ++++ rabbitmq queue init start :[{}]", JSON.toJSONString(myQueue));
-                        Queue queue = this.initRabbitMqQueue(myQueue.getExchangeName(), myQueue.getQueueName(), myQueue.getExchangeType(), myQueue.getRoutingKey(), myQueue.isDurable(), myQueue.isAutoDelete());
-                        log.info("===>  ++++ rabbitmq queue init success :[{}]", JSON.toJSONString(myQueue));
-                        return queue;
+                        if(!ObjectUtils.isEmpty(myQueue)) {
+
+                            AbstractExchange exchange = this.getExchange(myQueue.getExchangeType(), myQueue.getExchangeName(), myQueue.isDurable(), myQueue.isAutoDelete());
+                            rabbitAdmin.declareExchange(exchange);
+                            //获取队列附加参数
+                            Map<String, Object> argument = this.getArgument(myQueue);
+                            Queue queue = new Queue(myQueue.getQueueName(), myQueue.isDurable(), myQueue.isExclusive(), myQueue.isAutoDelete(), argument);
+                            rabbitAdmin.declareQueue(queue);
+                            rabbitAdmin.declareBinding(this.getBinding(exchange, myQueue.getRoutingKey(), queue));
+                            log.info("===>  ++++ rabbitmq queue init success :[{}]", JSON.toJSONString(myQueue));
+                            return queue;
+                        }
+
                    /* }
                 }
                 log.info("++++initRabbitMqQueue success ++++");
@@ -47,15 +62,28 @@ public class RabbitMqUtils {
         return null;
     }
 
-    public Queue initRabbitMqQueue(String exchangeName,String queueName, String type, String routingKey,boolean durable, boolean autoDelete){
-        log.info("initRabbitMqQueue start exchageName[{}],queueName[{}],type:[{}],routingKey:[{}],durable:[{}],autoDelete:[{}]"
-                ,exchangeName,queueName,type,routingKey,durable,autoDelete);
-        Queue queue = new Queue(queueName);
-        rabbitAdmin.declareQueue(queue);
-        AbstractExchange exchange = this.getExchange(type, exchangeName,durable,autoDelete);
-        rabbitAdmin.declareExchange(exchange);
-        rabbitAdmin.declareBinding(this.getBinding(exchange,routingKey,queue));
-        return queue;
+    /**
+     * 构建队列附加参数设置
+     * @param myQueue
+     * @return
+     */
+    private Map<String,Object> getArgument(MyQueue myQueue) {
+        Map<String,Object> args = new HashMap<>();
+        QueueArgument queueArgument = myQueue.getQueueArgument();
+        if(!ObjectUtils.isEmpty(queueArgument)){
+            String dlxExchangeName = queueArgument.getDlxExchangeName();
+            String dlxRoutingkey = queueArgument.getDlxRoutingkey();
+            Long ttl = queueArgument.getTtl();
+          if(!StringUtils.isEmpty(dlxExchangeName)
+                  && !StringUtils.isEmpty(dlxRoutingkey)){
+              args.put("x-dead-letter-routing-key",dlxRoutingkey);
+              args.put("x-dead-letter-exchange", dlxExchangeName);
+          }
+          if (!ObjectUtils.isEmpty(ttl)){
+              args.put("x-message-ttl",ttl.longValue());
+          }
+        }
+        return args;
     }
 
     private Binding getBinding(AbstractExchange defaultExchange, String Key, Queue queue) {

@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by Administrator on 2018/6/20.
+ * Created by lemonade on 2018/12/27.
  */
 public class RedisUtils {
     private RedisTemplate redisTemplate;

@@ -3,13 +3,9 @@ package com.frame.starter.redis.properties;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import lombok.ToString;
-
 /**
- * @author Abbot
- * @des
- * @date 2018/10/18 10:42
- **/
-
+ * Created by lemonade on 2018/12/27.
+ */
 @ConfigurationProperties(prefix = "spring.redisson", ignoreUnknownFields = false)
 @Data
 @ToString

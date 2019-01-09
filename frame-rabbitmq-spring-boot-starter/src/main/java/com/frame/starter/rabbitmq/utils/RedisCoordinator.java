@@ -1,6 +1,8 @@
 package com.frame.starter.rabbitmq.utils;
 
+import com.alibaba.fastjson.JSON;
 import com.frame.starter.rabbitmq.constans.MQConstants;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SetOperations;
@@ -10,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+@Slf4j
 public class RedisCoordinator implements Coordinator {
 
     RedisTemplate redisTemplate;
@@ -20,6 +23,7 @@ public class RedisCoordinator implements Coordinator {
 
     @Override
     public void setMsgPrepare(String msgId) {
+        log.info("==>  RedisCoordinator setMsgPrepare msgId:[{}]",msgId);
         redisTemplate.opsForSet().add(MQConstants.MQ_MSG_PREPARE, msgId);
     }
 
@@ -27,21 +31,30 @@ public class RedisCoordinator implements Coordinator {
 
     @Override
     public void setMsgReady(String msgId, RabbitMetaMessage rabbitMetaMessage) {
-        redisTemplate.opsForHash().put(MQConstants.MQ_MSG_READY, msgId, rabbitMetaMessage);
+        String message = JSON.toJSONString(rabbitMetaMessage);
+        log.info("==>  RedisCoordinator setMsgReady msgId:{},message:{}",msgId,message);
+        redisTemplate.opsForHash().put(MQConstants.MQ_MSG_READY, msgId, message);
         redisTemplate.opsForSet().remove(MQConstants.MQ_MSG_PREPARE,msgId);
     }
     @Override
     public boolean hasReadyMsg(String msgId) {
-       return  redisTemplate.opsForHash().hasKey(MQConstants.MQ_MSG_READY, msgId);
+        log.info("==>  RedisCoordinator hasReadyMsg msgId:{}",msgId);
+        boolean is = redisTemplate.opsForHash().hasKey(MQConstants.MQ_MSG_READY, msgId);
+        log.info("==>  RedisCoordinator hasReadyMsg msgId:{},isHasMsg:{}",msgId,is);
+        return is;
     }
     @Override
     public void setMsgSuccess(String msgId) {
+        log.info("==>  RedisCoordinator hasReadyMsg msgId:{}",msgId);
         redisTemplate.opsForHash().delete(MQConstants.MQ_MSG_READY, msgId);
     }
 
     @Override
     public RabbitMetaMessage getMetaMsg(String msgId) {
-        return (RabbitMetaMessage)redisTemplate.opsForHash().get(MQConstants.MQ_MSG_READY, msgId);
+        log.info("==>  RedisCoordinator getMetaMsg msgId:{}",msgId);
+        String message = (String) redisTemplate.opsForHash().get(MQConstants.MQ_MSG_READY, msgId);
+        log.info("==>  RedisCoordinator getMetaMsg msgId:{},message:{}",msgId,message);
+        return JSON.parseObject(message,RabbitMetaMessage.class);
     }
 
     @Override

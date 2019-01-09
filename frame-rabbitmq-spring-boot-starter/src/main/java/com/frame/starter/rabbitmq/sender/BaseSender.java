@@ -20,9 +20,9 @@ import org.springframework.util.StringUtils;
 
 import java.util.UUID;
 
+
 /**
- * <p><b>Description:</b> RabbitMQ消息发送者
- * <p><b>Company:</b>
+ * Created by lemonade on 2019/1/8.
  */
 @Component
 public class BaseSender {
@@ -44,7 +44,7 @@ public class BaseSender {
 
     /**
      * 发送MQ消息
-     * @param rabbitMetaMessage Rabbit元信息对象，用于存储交换器、队列名、消息体
+     * @param rabbitMetaMessage Rabbit信息对象，用于存储交换器、队列名、消息体
      * @return 消息ID
      * @throws JsonProcessingException 
      */

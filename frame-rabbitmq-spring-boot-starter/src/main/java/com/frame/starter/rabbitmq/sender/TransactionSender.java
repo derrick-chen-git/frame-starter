@@ -18,11 +18,9 @@ import org.springframework.stereotype.Component;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/** 
- * 描述：封装sender
- * @author fw 
- * 创建时间：2017年10月14日 下午10:30:00 
- * @version 1.0.0 
+
+/**
+ * Created by lemonade on 2019/1/8.
  */
 @Component
 @Aspect 
