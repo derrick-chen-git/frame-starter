@@ -6,8 +6,11 @@ package com.frame.starter.rabbitmq.utils;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.*;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.ChannelAwareMessageListener;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
@@ -23,7 +26,9 @@ public class RabbitMqUtils {
 
     private RabbitTemplate rabbitTemplate;
     private RabbitAdmin rabbitAdmin;
-    public RabbitMqUtils(RabbitTemplate rabbitTemplate,RabbitAdmin rabbitAdmin) {
+    private ConnectionFactory connectionFactory;
+    public RabbitMqUtils(ConnectionFactory connectionFactory,RabbitTemplate rabbitTemplate,RabbitAdmin rabbitAdmin) {
+        this.connectionFactory = connectionFactory;
         this.rabbitTemplate = rabbitTemplate;
         this.rabbitAdmin = rabbitAdmin;
     }
@@ -121,6 +126,23 @@ public class RabbitMqUtils {
         return exchange;
     }
 
-
+    /**
+     * 定义队列监听器
+     * @param queue 监听队列
+     * @param listener 监听器
+     * @param ackMode 消息确认模式
+     * @param prefetchCount 最大消费数量
+     * @return
+     */
+    public SimpleMessageListenerContainer initListenerContainer(Queue queue, ChannelAwareMessageListener listener,AcknowledgeMode ackMode,int prefetchCount){
+        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(connectionFactory);
+        container.setQueues(queue);
+        container.setExposeListenerChannel(true);
+        container.setAcknowledgeMode(ackMode);
+        container.setMessageListener(listener);
+        /** 设置消费者能处理消息的最大个数 */
+        container.setPrefetchCount(prefetchCount);
+        return container;
+    }
 
 }

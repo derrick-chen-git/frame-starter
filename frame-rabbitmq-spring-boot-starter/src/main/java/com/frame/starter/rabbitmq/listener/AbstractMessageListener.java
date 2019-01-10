@@ -26,7 +26,7 @@ public abstract class AbstractMessageListener implements ChannelAwareMessageList
     /**
      * 最大失败重新消费次数
      */
-    private Integer maxConsumerCount = 3;
+    private Integer maxConsumerCount = MQConstants.MAX_CONSUMER_COUNT;
     /**
      * 接收消息，子类必须实现该方法
      *

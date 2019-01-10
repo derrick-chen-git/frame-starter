@@ -132,7 +132,7 @@ public class RabbitAutoConfiguration {
      * 注入rabbitutils
      */
     @Bean
-    public RabbitMqUtils rabbitMqUtils(RabbitAdmin rabbitAdmin,RabbitTemplate rabbitTemplate){
-     return new RabbitMqUtils(rabbitTemplate,rabbitAdmin);
+    public RabbitMqUtils rabbitMqUtils(ConnectionFactory connectionFactory,RabbitAdmin rabbitAdmin,RabbitTemplate rabbitTemplate){
+     return new RabbitMqUtils(connectionFactory,rabbitTemplate,rabbitAdmin);
     }
 }
