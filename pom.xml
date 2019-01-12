@@ -7,6 +7,7 @@
     <groupId>com.frame.starter</groupId>
     <artifactId>frame-starter</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
     <modules>
         <module>frame-rabbitmq-spring-boot-starter</module>
         <module>frame-redis-spring-boot-starter</module>
