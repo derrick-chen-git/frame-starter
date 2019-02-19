@@ -55,10 +55,7 @@ public class RedissonAutoConfiguration{
             return template;
         }
 
-        @Bean
-        public RedisUtils redisUtils(RedisTemplate redisTemplate){
-            return new RedisUtils(redisTemplate);
-        }
+
 
 
     @Configuration
@@ -159,5 +156,11 @@ public class RedissonAutoConfiguration{
 
             return Redisson.create(config);
         }
+
+        @Bean
+        public RedisUtils redisUtils(RedisTemplate redisTemplate,RedissonClient redissonClient){
+            return new RedisUtils(redisTemplate,redissonClient);
+        }
+
     }
 }

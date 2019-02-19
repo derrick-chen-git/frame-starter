@@ -1,6 +1,11 @@
 package com.frame.starter.redis.utils;
 
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.*;
+import org.springframework.stereotype.Component;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
@@ -10,9 +15,14 @@ import java.util.concurrent.TimeUnit;
  * Created by lemonade on 2018/12/27.
  */
 public class RedisUtils {
+
     private RedisTemplate redisTemplate;
-    public RedisUtils(RedisTemplate redisTemplate) {
-        this.redisTemplate = redisTemplate;
+    private RedissonClient redissonClient;
+
+    public final String REDIS_LOCK_PRE  = "redis_lock_%s";
+
+    public RedisUtils(RedisTemplate redisTemplate,RedissonClient redissonClient) {
+        this.redisTemplate = redisTemplate;this.redissonClient = redissonClient;
     }
     /**
      * 写入缓存
@@ -191,5 +201,28 @@ public class RedisUtils {
     }
     public long hmDelete(String key, Object hashKey){
         return redisTemplate.opsForHash().delete(key,hashKey);
+    }
+
+    /**
+     * 尝试获取锁
+     * @param key 锁键
+     * @param waitTime 加锁等待时间
+     * @param lockTime 锁定时间
+     * @param t 时间单位
+     * @return
+     * @throws InterruptedException
+     */
+    public boolean acquireLock(String key,long waitTime, long lockTime, TimeUnit t) throws InterruptedException {
+        RLock lock  =  redissonClient.getLock(String.format(REDIS_LOCK_PRE,key));
+        return lock.tryLock(3,10, TimeUnit.SECONDS);
+    }
+
+    /**
+     * 解锁
+     * @param key
+     */
+    public void releaseLock(String key){
+        RLock lock  =  redissonClient.getLock(String.format(REDIS_LOCK_PRE,key));
+        lock.unlock();
     }
 }
