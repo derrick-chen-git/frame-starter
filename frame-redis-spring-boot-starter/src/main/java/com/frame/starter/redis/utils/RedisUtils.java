@@ -214,7 +214,7 @@ public class RedisUtils {
      */
     public boolean acquireLock(String key,long waitTime, long lockTime, TimeUnit t) throws InterruptedException {
         RLock lock  =  redissonClient.getLock(String.format(REDIS_LOCK_PRE,key));
-        return lock.tryLock(3,10, TimeUnit.SECONDS);
+        return lock.tryLock(waitTime,lockTime, t);
     }
 
     /**
