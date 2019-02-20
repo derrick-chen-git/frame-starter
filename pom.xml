@@ -13,6 +13,7 @@
         <module>frame-redis-spring-boot-starter</module>
         <module>frame-data-spring-boot-starter</module>
         <module>frame-xxl-job-spring-boot-starter</module>
+        <module>frame-xxl-conf-spring-boot-starter</module>
     </modules>
 
 </project>

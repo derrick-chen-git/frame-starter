@@ -213,7 +213,7 @@ public class RedisUtils {
      * @throws InterruptedException
      */
     public boolean acquireLock(String key,long waitTime, long lockTime, TimeUnit t) throws InterruptedException {
-        RLock lock  =  redissonClient.getLock(String.format(REDIS_LOCK_PRE,key));
+        RLock lock = getrLock(key);
         return lock.tryLock(waitTime,lockTime, t);
     }
 
@@ -222,7 +222,11 @@ public class RedisUtils {
      * @param key
      */
     public void releaseLock(String key){
-        RLock lock  =  redissonClient.getLock(String.format(REDIS_LOCK_PRE,key));
+        RLock lock = getrLock(key);
         lock.unlock();
+    }
+
+    private RLock getrLock(String key) {
+        return redissonClient.getLock(String.format(REDIS_LOCK_PRE,key));
     }
 }
