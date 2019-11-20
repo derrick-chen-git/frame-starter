@@ -1,4 +1,4 @@
-package com.frame.starter.rabbitmq.utils;
+package com.frame.starter.rabbitmq.service;
 
 import java.util.List;
 

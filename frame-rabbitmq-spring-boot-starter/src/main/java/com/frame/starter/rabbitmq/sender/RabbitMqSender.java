@@ -1,8 +1,8 @@
 package com.frame.starter.rabbitmq.sender;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.frame.starter.rabbitmq.utils.Coordinator;
-import com.frame.starter.rabbitmq.utils.RabbitMetaMessage;
+import com.frame.starter.rabbitmq.service.Coordinator;
+import com.frame.starter.rabbitmq.service.RabbitMetaMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

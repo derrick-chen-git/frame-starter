@@ -1,22 +1,18 @@
 package com.frame.starter.rabbitmq.config;
 
 import com.frame.starter.rabbitmq.properties.RabbitConnectionProperties;
-import com.frame.starter.rabbitmq.utils.Coordinator;
 import com.frame.starter.rabbitmq.utils.RabbitMqUtils;
-import com.frame.starter.rabbitmq.utils.RedisCoordinator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.connection.RabbitConnectionFactoryBean;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.core.RedisTemplate;
 
 /**
  * Created by lemonade on 2019/1/7.
@@ -45,7 +41,7 @@ public class RabbitAutoConfiguration {
         factory.setPassword(connectionProperties.getPassword());
         factory.setVirtualHost(connectionProperties.getVirtualHost());
         //factory.setConnectionTimeout(connectionTimeout);
-//        factory.setAutomaticRecoveryEnabled(true);
+        //factory.setAutomaticRecoveryEnabled(true);
         factory.afterPropertiesSet();
 
         CachingConnectionFactory connectionFactory = new CachingConnectionFactory(factory.getObject());
@@ -64,19 +60,19 @@ public class RabbitAutoConfiguration {
         return new RabbitAdmin(connectionFactory);
     }
 
-    /**
+   /* *//**
      * redis储存
      * @param redisTemplate
      * @return
-     */
+     *//*
     @Bean
     public Coordinator RedisCoordinator(RedisTemplate redisTemplate){
         return new RedisCoordinator(redisTemplate);
     }
-    /**
+    *//**
      * json转换器
      * @return
-     */
+     *//*
     @Bean
     public Jackson2JsonMessageConverter jackson2JsonMessageConverter() {
         Jackson2JsonMessageConverter jsonMessageConverter = new Jackson2JsonMessageConverter();
@@ -99,7 +95,7 @@ public class RabbitAutoConfiguration {
             log.info("confirm回调，ack={} correlationData={} cause={}", ack, correlationData, cause);
             String msgId = correlationData.getId();
 
-            /** 只要消息能投入正确的消息队列，并持久化，就返回ack为true*/
+            *//** 只要消息能投入正确的消息队列，并持久化，就返回ack为true*//*
             if(ack){
                 log.info("消息已正确投递到队列, correlationData:{}", correlationData);
                 //清除重发缓存
@@ -122,11 +118,11 @@ public class RabbitAutoConfiguration {
             returnFlag = true;
         });
 
-//        /** confirm的超时时间*/
+//        *//** confirm的超时时间*//*
 //        rabbitTemplate.waitForConfirms(MQConstants.TIME_GAP);
 
         return rabbitTemplate;
-    }
+    }*/
 
     /**
      * 注入rabbitutils

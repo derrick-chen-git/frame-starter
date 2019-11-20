@@ -33,7 +33,7 @@ public class RabbitMqUtils {
         this.rabbitAdmin = rabbitAdmin;
     }
 
-    public Queue init(MyQueue myQueue) {
+    public Queue init(service.MyQueue myQueue) {
         try {
            /* Yaml yaml = new Yaml();
             RabbitQueueProperties queueProperties = yaml.loadAs(this
@@ -72,9 +72,9 @@ public class RabbitMqUtils {
      * @param myQueue
      * @return
      */
-    private Map<String,Object> getArgument(MyQueue myQueue) {
+    private Map<String,Object> getArgument(service.MyQueue myQueue) {
         Map<String,Object> args = new HashMap<>();
-        QueueArgument queueArgument = myQueue.getQueueArgument();
+        service.QueueArgument queueArgument = myQueue.getQueueArgument();
         if(!ObjectUtils.isEmpty(queueArgument)){
             String dlxExchangeName = queueArgument.getDlxExchangeName();
             String dlxRoutingkey = queueArgument.getDlxRoutingkey();

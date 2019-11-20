@@ -3,8 +3,8 @@ package com.frame.starter.rabbitmq.sender;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.frame.starter.rabbitmq.utils.CompleteCorrelationData;
-import com.frame.starter.rabbitmq.utils.RabbitMetaMessage;
+import com.frame.starter.rabbitmq.service.CompleteCorrelationData;
+import com.frame.starter.rabbitmq.service.RabbitMetaMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.AmqpException;

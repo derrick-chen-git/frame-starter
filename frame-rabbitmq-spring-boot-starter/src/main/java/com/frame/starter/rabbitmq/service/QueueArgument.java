@@ -1,4 +1,4 @@
-package com.frame.starter.rabbitmq.utils;
+package com.frame.starter.rabbitmq.service;
 
 import lombok.Builder;
 import lombok.Data;

@@ -1,7 +1,8 @@
-package com.frame.starter.rabbitmq.utils;
+package com.frame.starter.rabbitmq.service;
 
 import com.alibaba.fastjson.JSON;
 import com.frame.starter.rabbitmq.constans.MQConstants;
+import com.frame.starter.rabbitmq.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;

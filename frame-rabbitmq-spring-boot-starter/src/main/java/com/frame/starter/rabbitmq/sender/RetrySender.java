@@ -2,8 +2,8 @@ package com.frame.starter.rabbitmq.sender;
 
 
 import com.frame.starter.rabbitmq.constans.MQConstants;
-import com.frame.starter.rabbitmq.utils.Coordinator;
-import com.frame.starter.rabbitmq.utils.RabbitMetaMessage;
+import com.frame.starter.rabbitmq.service.Coordinator;
+import com.frame.starter.rabbitmq.service.RabbitMetaMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
